@@ -60,7 +60,6 @@ export const useAuth = () => {
 
 function useFirebaseAuth() {
   const [user, setUser] = useState(null);
-  const [profile, setProfile] = useState(undefined);
   const [loading, setLoading] = useState(true);
 
   const handleUser = async (rawUser) => {
@@ -83,7 +82,7 @@ function useFirebaseAuth() {
     setLoading(true);
     return firebase
       .auth()
-      .signInWithPopup(new firebase.auth.GoogleAuthProvider())
+      .signInWithRedirect(new firebase.auth.GoogleAuthProvider())
       .then((response) => {
         handleUser(response.user);
 
