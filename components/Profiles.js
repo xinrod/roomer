@@ -19,7 +19,6 @@ const ProfileCard = ({ profile }) => {
     try {
       const res = await sendMessage(profile.uid, message, auth.user);
     } catch (error) {
-      console.log(error)
       return
     }
     alert("Message Sent!")

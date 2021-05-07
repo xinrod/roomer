@@ -41,7 +41,6 @@ export default function Profile() {
                 bio: e.target.bio.value,
             })
         }
-        console.log(old.campus == "off")
         return (
 
             <Flex w="100vw" height="100vh" direction="column" align="center">

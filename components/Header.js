@@ -4,7 +4,6 @@ import { useAuth } from "../utils/firebase/auth";
 import Link from 'next/link'
 
 const MenuItems = ({ children }) => {
-    console.log(children.toLowerCase())
     return (
         <Link href={`/${children.toLowerCase()}`}>
             <Button bg="transparent" mt={{ base: 4, md: 0 }} mr={6} display="block"
