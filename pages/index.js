@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Profiles from "../components/Profiles";
 import Signin from "../components/Signin";
-import { getProfiles, useAuth } from "../utils/firebase/auth";
+import { useAuth } from "../utils/firebase/auth";
+import { getProfiles } from "../utils/firebase/db";
 
 
 

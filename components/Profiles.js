@@ -6,7 +6,8 @@ import { Spinner } from "@chakra-ui/spinner"
 import { chakra } from "@chakra-ui/system"
 import { Textarea } from "@chakra-ui/textarea"
 import { useState } from "react"
-import { sendMessage, useAuth } from "../utils/firebase/auth"
+import { useAuth } from "../utils/firebase/auth"
+import { sendMessage } from "../utils/firebase/db"
 
 
 

@@ -8,7 +8,8 @@ import { Textarea } from "@chakra-ui/textarea";
 import { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import Signin from "../../components/Signin";
-import { createProfile, getProfile, useAuth } from "../../utils/firebase/auth";
+import { useAuth } from "../../utils/firebase/auth";
+import { createProfile, getProfile } from "../../utils/firebase/db";
 
 
 export default function Profile() {
