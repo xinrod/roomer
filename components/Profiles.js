@@ -29,37 +29,39 @@ const ProfileCard = ({ profile }) => {
   }
   return (
     <>
-      <Flex border="1px" borderColor="gray.200" borderRadius={4} p={6} w="100%">
-        <Box>
+      <Flex border="1px" borderColor="gray.200" borderRadius={4} p={6} w="100%" direction={["column", "row"]} alignItems={["center", "center"]} ml="auto">
+        <Flex direction={["column", "row"]} w="100%">
           <Box>
-            <Heading color="twitter.600" mb={2}>
-              {profile.name}
-            </Heading>
+            <Box>
+              <Heading color="twitter.600" mb={2}>
+                {profile.name}
+              </Heading>
+              <Text>
+                Class of <chakra.strong>{profile.grad}</chakra.strong>
+              </Text>
+            </Box>
             <Text>
-              Class of <chakra.strong>{profile.grad}</chakra.strong>
+              Living <chakra.strong>{profile.campus ? `${profile.campus}-campus` : "not stated"}</chakra.strong>
             </Text>
+            <Text>
+              Majoring in <chakra.strong>{profile.major ? profile.major : "not stated"}</chakra.strong>
+            </Text>
+            <Text>{profile.bio ? `Bio: ${profile.bio}` : ""}</Text>
           </Box>
-          <Text>
-            Living <chakra.strong>{profile.campus ? `${profile.campus}-campus` : "not stated"}</chakra.strong>
-          </Text>
-          <Text>
-            Majoring in <chakra.strong>{profile.major ? profile.major : "not stated"}</chakra.strong>
-          </Text>
-          <Text>{profile.bio ? `Bio: ${profile.bio}` : ""}</Text>
-        </Box>
-        <Button alignSelf="center" colorScheme="blue" fontSize="2xl" w={["200px"]} ml="auto" h="50px" onClick={onOpen}>Message</Button>
+          <Button alignSelf={["start", "center"]} justifySelf="flex-end" colorScheme="blue" fontSize={["md", "2xl"]} w={["200px"]} ml={["","auto"]} h="50px" onClick={onOpen}>Message</Button>
+        </Flex>
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Send a message to {profile.name}!</ModalHeader>
+            <ModalHeader fontSize={["md", "lg", "xl"]}>Send a message to {profile.name}!</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <Textarea onChange={updateMessage} defaultValue="Hey, lets be roommates!" colorScheme="twitter" height="150px"/>
+              <Textarea onChange={updateMessage} defaultValue="Hey, lets be roommates!" colorScheme="twitter" height="150px" />
             </ModalBody>
             <ModalFooter>
               <HStack spacing={4}>
-              <Button alignSelf="center" bg="blue.500" color="white" onClick={handleMessage}>Send Message</Button>
-              <Button alignSelf="center" bg="blue.500" color="white" onClick={onClose}>Cancel</Button>
+                <Button alignSelf="center" bg="blue.500" color="white" onClick={handleMessage}>Send Message</Button>
+                <Button alignSelf="center" bg="blue.500" color="white" onClick={onClose}>Cancel</Button>
               </HStack>
             </ModalFooter>
           </ModalContent>
@@ -72,7 +74,7 @@ const ProfileCard = ({ profile }) => {
 const Profiles = ({ profiles }) => {
   if (Array.isArray(profiles)) {
     return (
-      profiles ? profiles.map((profile, idx) => (<ProfileCard profile={profile} key={idx} />)) : <></>
+      profiles ? profiles.reverse().map((profile, idx) => (<ProfileCard profile={profile} key={idx} />)) : <></>
     )
   }
   return <Spinner />
