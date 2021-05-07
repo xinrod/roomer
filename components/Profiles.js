@@ -40,12 +40,12 @@ const ProfileCard = ({ profile }) => {
             </Text>
           </Box>
           <Text>
-            Living <chakra.strong>{profile.campus}-campus</chakra.strong>
+            Living <chakra.strong>{profile.campus ? `${profile.campus}-campus` : "not stated"}</chakra.strong>
           </Text>
           <Text>
-            Majoring in <chakra.strong>{profile.major}</chakra.strong>
+            Majoring in <chakra.strong>{profile.major ? profile.major : "not stated"}</chakra.strong>
           </Text>
-          <Text>Bio: {profile.bio}</Text>
+          <Text>{profile.bio ? `Bio: ${profile.bio}` : ""}</Text>
         </Box>
         <Button alignSelf="center" colorScheme="blue" fontSize="2xl" w={["200px"]} ml="auto" h="50px" onClick={onOpen}>Message</Button>
         <Modal isOpen={isOpen} onClose={onClose}>

@@ -10,11 +10,13 @@ import Header from "../../components/Header";
 import Signin from "../../components/Signin";
 import { useAuth } from "../../utils/firebase/auth";
 import { createProfile, getProfile } from "../../utils/firebase/db";
+import { useRouter } from 'next/router';
 
 
 export default function Profile() {
     const auth = useAuth();
     if (auth.user) {
+        const router = useRouter();
         const [profileData, setProfileData] = useState({});
         const [old, setOld] = useState({})
         useEffect(() => {
@@ -24,9 +26,10 @@ export default function Profile() {
             }
             getOld(auth.user.uid)
         }, [])
-        useEffect(() => {
+        useEffect(async () => {
             if (profileData != {} && 'major' in profileData && 'campus' in profileData && 'hometown' in profileData && 'bio' in profileData) {
-                createProfile(auth.user.uid, profileData)
+                await createProfile(auth.user.uid, profileData)
+                router.push('/')
             }
 
         }, [profileData])
