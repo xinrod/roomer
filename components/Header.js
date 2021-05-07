@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Heading, Flex, Text, Button } from "@chakra-ui/react";
 import { useAuth } from "../utils/firebase/auth";
-import Link from 'next/Link'
+import Link from 'next/link'
 
 const MenuItems = ({ children }) => {
     console.log(children.toLowerCase())
