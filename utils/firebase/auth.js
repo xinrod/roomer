@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import Router from 'next/router';
 import firebase from './firebase';
-import { createUser } from './db';
+import { createProfile, createUser } from './db';
 
 const authContext = createContext(undefined);
 
@@ -25,6 +25,9 @@ function useFirebaseAuth() {
 
       createUser(user.uid, userWithoutToken);
       setUser(user);
+      createProfile(user.uid, {
+        name: user.name,
+      })
       setLoading(false);
       return user;
     } else {

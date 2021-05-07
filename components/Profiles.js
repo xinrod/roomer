@@ -34,10 +34,10 @@ const ProfileCard = ({ profile, you }) => {
           <Box>
             <Box>
               <Heading color="twitter.600" mb={2}>
-                {profile.name + (you ? " (This is you!)" : "")}
+                {profile.name}  <chakra.span fontSize="md" color="gray.600">{(you ? " (This is you! Update your profile if anything is missing!)" : "")}</chakra.span>
               </Heading>
               <Text>
-                Class of <chakra.strong>{profile.grad}</chakra.strong>
+                Class of <chakra.strong>{profile.grad ? profile.grad : "not stated"}</chakra.strong>
               </Text>
             </Box>
             <Text>
@@ -74,13 +74,22 @@ const ProfileCard = ({ profile, you }) => {
 const Profiles = ({ profiles }) => {
   const auth = useAuth();
   if (Array.isArray(profiles)) {
+    let yourProfile = undefined;
+    profiles.forEach(profile => {
+      if (profile.uid === auth.user.uid) {
+        yourProfile = profile
+      }
+    });
     return (
-      profiles ? profiles.map((profile, idx, arr) => {
-        if (profile.uid === auth.user.uid) {return (<ProfileCard profile={profile} key={idx} you={true}/>);}
+      <>
+      <ProfileCard profile={yourProfile} you={true} />
+      {profiles ? profiles.map((profile, idx, arr) => {
+        if (profile.uid === auth.user.uid) { return }
         return (
-          <ProfileCard profile={profile} key={idx} you={false}/>
+          <ProfileCard profile={profile} key={idx} you={false} />
         );
-      }) : <></>
+      }) : <></>}
+      </>
     )
   }
   return <Spinner />
