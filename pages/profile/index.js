@@ -55,7 +55,7 @@ export default function Profile() {
                     <chakra.form onSubmit={handleSubmit}>
                         <FormControl id="major">
                             <FormLabel>Major</FormLabel>
-                            <Input name="major" defaultValue={old.major} />
+                            <Input name="major" defaultValue={old?.major} />
                         </FormControl>
                         <FormControl id="grad">
                             <FormLabel id="grad">
@@ -67,7 +67,7 @@ export default function Profile() {
                         </FormControl>
                         <FormControl as="fieldset">
                             <FormLabel as="legend">Living on or off campus?</FormLabel>
-                            <RadioGroup defaultValue={old.campus} name="campus">
+                            <RadioGroup defaultValue={old?.campus} name="campus">
                                 <HStack>
                                     <Radio value="on">on</Radio>
                                     <Radio value="off">off</Radio>
@@ -76,13 +76,13 @@ export default function Profile() {
                         </FormControl>
                         <FormControl id="hometown" >
                             <FormLabel>Hometown</FormLabel>
-                            <Input name="hometown" defaultValue={old.hometown} />
+                            <Input name="hometown" defaultValue={old?.hometown} />
                         </FormControl>
                         <FormControl id="bio">
                             <FormLabel id="bio">
                                 Write a short bio about yourself!
                 </FormLabel>
-                            <Textarea name="bio" defaultValue={old.bio}>
+                            <Textarea name="bio" defaultValue={old?.bio}>
 
                             </Textarea>
                         </FormControl>
