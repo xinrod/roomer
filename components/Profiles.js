@@ -11,7 +11,7 @@ import { sendMessage } from "../utils/firebase/db"
 
 
 
-const ProfileCard = ({ profile }) => {
+const ProfileCard = ({ profile, you }) => {
   const auth = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [message, setMessage] = useState("Hey, lets be roommates!");
@@ -34,7 +34,7 @@ const ProfileCard = ({ profile }) => {
           <Box>
             <Box>
               <Heading color="twitter.600" mb={2}>
-                {profile.name}
+                {profile.name + (you ? " (This is you!)" : "")}
               </Heading>
               <Text>
                 Class of <chakra.strong>{profile.grad}</chakra.strong>
@@ -48,7 +48,7 @@ const ProfileCard = ({ profile }) => {
             </Text>
             <Text>{profile.bio ? `Bio: ${profile.bio}` : ""}</Text>
           </Box>
-          <Button alignSelf={["start", "center"]} justifySelf="flex-end" colorScheme="blue" fontSize={["md", "2xl"]} w={["200px"]} ml={["","auto"]} h="50px" onClick={onOpen}>Message</Button>
+          <Button alignSelf={["start", "center"]} justifySelf="flex-end" colorScheme="blue" fontSize={["md", "2xl"]} w={["200px"]} ml={["", "auto"]} h="50px" onClick={onOpen}>Message</Button>
         </Flex>
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
@@ -72,9 +72,15 @@ const ProfileCard = ({ profile }) => {
 }
 
 const Profiles = ({ profiles }) => {
+  const auth = useAuth();
   if (Array.isArray(profiles)) {
     return (
-      profiles ? profiles.reverse().map((profile, idx) => (<ProfileCard profile={profile} key={idx} />)) : <></>
+      profiles ? profiles.map((profile, idx, arr) => {
+        if (profile.uid === auth.user.uid) {return (<ProfileCard profile={profile} key={idx} you={true}/>);}
+        return (
+          <ProfileCard profile={profile} key={idx} you={false}/>
+        );
+      }) : <></>
     )
   }
   return <Spinner />
