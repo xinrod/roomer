@@ -10,7 +10,33 @@ import { useAuth } from "../utils/firebase/auth"
 import { sendMessage } from "../utils/firebase/db"
 
 
-
+const YourProfileCard = ({ profile }) => {
+  return (
+    <>
+      <Flex border="1px" borderColor="gray.200" borderRadius={4} p={6} w="100%" direction={["column", "row"]} alignItems={["center", "center"]} ml="auto">
+        <Flex direction={["column", "row"]} w="100%">
+          <Box>
+            <Box>
+              <Heading color="twitter.600" mb={2}>
+                {profile.name}  <chakra.span fontSize="md" color="gray.600">{(" (This is you! Update your profile if anything is missing!)")}</chakra.span>
+              </Heading>
+              <Text>
+                Class of <chakra.strong>{profile.grad ? profile.grad : "not stated"}</chakra.strong>
+              </Text>
+            </Box>
+            <Text>
+              Living <chakra.strong>{profile.campus ? `${profile.campus}-campus` : "not stated"}</chakra.strong>
+            </Text>
+            <Text>
+              Majoring in <chakra.strong>{profile.major ? profile.major : "not stated"}</chakra.strong>
+            </Text>
+            <Text>{profile.bio ? `Bio: ${profile.bio}` : ""}</Text>
+          </Box>
+        </Flex>
+      </Flex>
+    </>
+  );
+}
 const ProfileCard = ({ profile, you }) => {
   const auth = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -71,24 +97,18 @@ const ProfileCard = ({ profile, you }) => {
   );
 }
 
-const Profiles = ({ profiles }) => {
+const Profiles = ({ profiles, yourProfile }) => {
   const auth = useAuth();
   if (Array.isArray(profiles)) {
-    let yourProfile = undefined;
-    profiles.forEach(profile => {
-      if (profile.uid === auth.user.uid) {
-        yourProfile = profile
-      }
-    });
     return (
       <>
-      <ProfileCard profile={yourProfile} you={true} />
-      {profiles ? profiles.map((profile, idx, arr) => {
-        if (profile.uid === auth.user.uid) { return }
-        return (
-          <ProfileCard profile={profile} key={idx} you={false} />
-        );
-      }) : <></>}
+        {yourProfile ? <YourProfileCard profile={yourProfile} /> : <></>}
+        {profiles ? profiles.map((profile, idx, arr) => {
+          if (profile.uid === auth.user.uid) { return }
+          return (
+            <ProfileCard profile={profile} key={idx} you={false} />
+          );
+        }) : <></>}
       </>
     )
   }

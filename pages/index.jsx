@@ -11,17 +11,31 @@ import { getProfiles } from "../utils/firebase/db";
 
 function Home() {
   const auth = useAuth();
-  if (auth.user) {
-    
-    const [profiles, setProfiles] = useState();
-
-    useEffect(() => {
-      const fetchProfiles = async () => {
+  const [profiles, setProfiles] = useState([]);
+  const [yourProfile, setYours] = useState([]);
+  useEffect(() => {
+    const fetchProfiles = async () => {
+      if (auth.user) {
         const profiles = await getProfiles();
         setProfiles(profiles);
       }
-      fetchProfiles();
-    }, [])
+    }
+    fetchProfiles();
+  }, [auth])
+  useEffect(() => {
+
+    let yourProfile = {}
+    for (let i = 0; i < profiles.length; i++) {
+      let profile = profiles[i]
+      if (profile.uid === auth.user.uid) {
+        yourProfile = profile;
+        break;
+      }
+
+    }
+    setYours(yourProfile);
+  }, [profiles])
+  if (auth.user) {
     return (
 
       <Flex w="100vw" height="100vh" direction="column" align="center">
@@ -30,7 +44,7 @@ function Home() {
           People Looking for Roommates!
       </Heading>
         <Box overflow="scroll" w="100%" p={6}>
-          <Profiles profiles={profiles} />
+          <Profiles profiles={profiles} yourProfile={yourProfile}/>
 
         </Box>
       </Flex>
