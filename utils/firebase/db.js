@@ -49,7 +49,6 @@ export const addPseudoUsers = async () => {
     photoUrl: psuedo.picture.thumbnail,
   }
   createUser(user.uid, user);
-  createProfile(user.uid, {name: user.name, photoUrl: psuedo.picture.thumbnail, pseudo: true})
 }
 
 export async function sendMessage(sendUid, message, { uid, name }) {
