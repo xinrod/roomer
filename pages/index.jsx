@@ -1,10 +1,11 @@
+import { Button } from "@chakra-ui/button";
 import { Box, Flex, Heading } from "@chakra-ui/layout";
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Profiles from "../components/Profiles";
 import Signin from "../components/Signin";
 import { useAuth } from "../utils/firebase/auth";
-import { getProfiles, addPseudoUsers,  } from "../utils/firebase/db";
+import { getProfiles, addPseudoUsers, mergeProfileUsers,  } from "../utils/firebase/db";
 
 
 
