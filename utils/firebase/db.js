@@ -11,10 +11,16 @@ export async function createUser(uid, data) {
     .set({ uid, ...data }, { merge: true });
 }
 export async function createProfile(uid, data) {
+  let formattedData = {}
+  for (const prop in data) {
+    if (!(data[prop] == null || data[prop] === "")) {
+      formattedData[prop] = data[prop]
+    }
+  }
   return await firestore
     .collection('profiles')
     .doc(uid)
-    .set({ uid: uid, ...data }, { merge: true });
+    .set({ uid: uid, ...formattedData }, { merge: true });
 }
 export async function getProfile(uid) {
   const doc = await firestore
@@ -41,7 +47,7 @@ export const addPseudoUsers = async () => {
     photoUrl: psuedo.picture.thumbnail,
   }
   createUser(user.uid, user);
-  createProfile(user.uid, {name: user.name, pseudo: true})
+  createProfile(user.uid, {name: user.name, photoUrl: psuedo.picture.thumbnail, pseudo: true})
 }
 
 export async function sendMessage(sendUid, message, { uid, name }) {

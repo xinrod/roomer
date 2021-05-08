@@ -29,6 +29,7 @@ function useFirebaseAuth() {
       setUser(user);
       createProfile(user.uid, {
         name: user.name,
+        photoUrl: user.photoUrl
       })
       setMessageData(messData);
       setLoading(false);
@@ -53,7 +54,6 @@ function useFirebaseAuth() {
       .auth()
       .signInWithPopup(provider)
       .then((response) => {
-        console.log(response)
         handleUser(response.user);
 
         if (redirect) {
@@ -69,7 +69,6 @@ function useFirebaseAuth() {
       .auth()
       .signInWithPopup(provider)
       .then((response) => {
-        console.log(response)
         handleUser(response.user);
 
         if (redirect) {

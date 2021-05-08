@@ -1,7 +1,9 @@
 import { Button } from "@chakra-ui/button"
 import { useDisclosure } from "@chakra-ui/hooks"
+import { Image } from "@chakra-ui/image"
 import { Box, Flex, Heading, HStack, Text } from "@chakra-ui/layout"
 import { Modal, ModalCloseButton, ModalContent, ModalOverlay, ModalHeader, ModalBody, ModalFooter } from "@chakra-ui/modal"
+import { Skeleton } from "@chakra-ui/skeleton"
 import { Spinner } from "@chakra-ui/spinner"
 import { chakra } from "@chakra-ui/system"
 import { Textarea } from "@chakra-ui/textarea"
@@ -15,6 +17,9 @@ const YourProfileCard = ({ profile }) => {
     <>
       <Flex border="1px" borderColor="gray.200" borderRadius={4} p={6} w="100%" direction={["column", "row"]} alignItems={["center", "center"]} ml="auto">
         <Flex direction={["column", "row"]} w="100%">
+          {'photoUrl' in profile ? <Image alignSelf="center" mr={8} borderRadius={100} width={100} height={100} src={profile.photoUrl}
+            alt={profile.name + "'s Picture"}
+          /> : <Skeleton mr={8} borderRadius={100} width={100} height={100}></Skeleton>}
           <Box>
             <Box>
               <Heading color="Gray.200" mb={2}>
@@ -57,6 +62,10 @@ const ProfileCard = ({ profile, you }) => {
     <>
       <Flex border="1px" borderColor="gray.200" borderRadius={4} p={6} w="100%" direction={["column", "row"]} alignItems={["center", "center"]} ml="auto">
         <Flex direction={["column", "row"]} w="100%">
+          {'photoUrl' in profile ? <Image alignSelf="center" mr={8} borderRadius={100} width={100} height={100} src={profile.photoUrl}
+            alt={profile.name + "'s Picture"}
+          /> : <Skeleton mr={8} borderRadius={100} width={100} height={100}></Skeleton>}
+
           <Box>
             <Box>
               <Heading color="purple" mb={2}>
@@ -74,6 +83,7 @@ const ProfileCard = ({ profile, you }) => {
             </Text>
             <Text>{profile.bio ? `Bio: ${profile.bio}` : ""}</Text>
           </Box>
+
           <Button alignSelf={["start", "center"]} justifySelf="flex-end" colorScheme="blue" fontSize={["md", "2xl"]} w={["200px"]} ml={["", "auto"]} h="50px" onClick={onOpen}>Message</Button>
         </Flex>
         <Modal isOpen={isOpen} onClose={onClose}>

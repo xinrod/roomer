@@ -60,6 +60,7 @@ export default function Profile() {
             getOld(auth.user.uid)
         }, [])
         useEffect(async () => {
+            // console.log(profileData)
             if (profileData != {} && 'major' in profileData && 'campus' in profileData && 'hometown' in profileData && 'bio' in profileData) {
                 await createProfile(auth.user.uid, profileData)
                 router.push('/')
@@ -118,9 +119,14 @@ export default function Profile() {
 
                             </Textarea>
                         </FormControl>
-                        <Box w="100%" align="center">
+                        
+                        <Box w="100%" align="start">
                             <Button type="submit">Update and post your profile!</Button>
                         </Box>
+                        <Text colorScheme="telegram" fontSize="xs" my={4}>
+                            Note: your profile picture is taken off of your 3rd party login, so if you want to change it, change it there! Sorry, file storage is expensive :(.
+                        </Text>
+                        
                     
                     </chakra.form>
                 </Flex>
