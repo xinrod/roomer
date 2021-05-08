@@ -94,7 +94,7 @@ export default function Profile() {
                             <FormLabel id="grad">
                                 Graduation Date
                 </FormLabel>
-                            <Input name="grad" defaultValue={old?.grad}>
+                            <Input name="grad" defaultValue={old?.grad} placeholder="Enter your graduation year">
 
                             </Input>
                         </FormControl>
@@ -109,13 +109,13 @@ export default function Profile() {
                         </FormControl>
                         <FormControl id="hometown" >
                             <FormLabel>Hometown</FormLabel>
-                            <Input name="hometown" defaultValue={old?.hometown} />
+                            <Input name="hometown" defaultValue={old?.hometown} placeholder="Enter your hometown" />
                         </FormControl>
                         <FormControl id="bio">
                             <FormLabel id="bio">
                                 Write a short bio about yourself!
                 </FormLabel>
-                            <Textarea name="bio" defaultValue={old?.bio}>
+                            <Textarea name="bio" defaultValue={old?.bio} placeholder="Write a short bio about yourself!">
 
                             </Textarea>
                         </FormControl>

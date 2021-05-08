@@ -23,15 +23,15 @@ const YourProfileCard = ({ profile }) => {
           <Box>
             <Box>
               <Heading color="Gray.200" mb={2}>
-                {profile.name}  <chakra.span fontSize="md" color="gray.600">{(" (This is you! Update your profile if anything is missing!)")}</chakra.span>
+                {"name" in profile && profile.name !== null  ? profile.name : "Anon"}  <chakra.span fontSize="md" color="gray.600">{(" (This is you! Update your profile if anything is missing!)")}</chakra.span>
               </Heading>
               <Text>
                 Class of <chakra.strong>{profile.grad ? profile.grad : "not stated"}</chakra.strong>
               </Text>
             </Box>
             <Text>
-                Hometown: <chakra.strong>{profile.hometown ? profile.hometown : "not stated"}</chakra.strong>
-              </Text>
+              Hometown: <chakra.strong>{profile.hometown ? profile.hometown : "not stated"}</chakra.strong>
+            </Text>
             <Text>
               Living <chakra.strong>{profile.campus ? `${profile.campus}-campus` : "not stated"}</chakra.strong>
             </Text>
@@ -72,15 +72,15 @@ const ProfileCard = ({ profile, you }) => {
           <Box>
             <Box>
               <Heading color="purple" mb={2}>
-                {profile.name}  <chakra.span fontSize="md" color="gray.600">{(you ? " (This is you! Update your profile if anything is missing!)" : "")}</chakra.span>
+              {"name" in profile && profile.name !== null  ? profile.name : "Anonymous"}  <chakra.span fontSize="md" color="gray.600">{(you ? " (This is you! Update your profile if anything is missing!)" : "")}</chakra.span>
               </Heading>
               <Text>
                 Class of <chakra.strong>{profile.grad ? profile.grad : "not stated"}</chakra.strong>
               </Text>
             </Box>
             <Text>
-                Hometown: <chakra.strong>{profile.hometown ? profile.hometown : "not stated"}</chakra.strong>
-              </Text>
+              Hometown: <chakra.strong>{profile.hometown ? profile.hometown : "not stated"}</chakra.strong>
+            </Text>
             <Text>
               Living <chakra.strong>{profile.campus ? `${profile.campus}-campus` : "not stated"}</chakra.strong>
             </Text>

@@ -62,6 +62,7 @@ const Message = ({ message, auth }) => {
 const Messages = () => {
   const auth = useAuth();
   const [messageData, setMessageData] = useState({})
+  const [filtered, setFiltered] = useState()
   useEffect(() => {
     let messageData = {}
     if (auth.messageData) {
@@ -70,6 +71,21 @@ const Messages = () => {
     setMessageData(messageData);
   }, [auth])
   const { messages, unread } = messageData;
+
+  useEffect(() => {
+    const read = []
+    const unread = []
+    if ("messages" in messageData && Array.isArray(messageData.messages)) {
+      messageData.messages.forEach((message)=> {
+        if (message.read) {
+          read.push(message)
+        } else {
+          unread.push(message)
+        }
+      })
+    }
+    setFiltered([...unread, ...read])
+  }, [messageData])
   return (
     <>
       <Header />
@@ -78,7 +94,7 @@ const Messages = () => {
           Inbox
       </Heading>
         <VStack alignSelf="start" justifySelf="flex-start" m={4}>
-          {Array.isArray(messages) ? messages.map((message, idx) => <Message message={message} auth={auth} key={idx} />) : <Spinner />}
+          {Array.isArray(filtered) && filtered.length > 0 ? filtered.map((message, idx) => <Message message={message} auth={auth} key={idx} />) : <Spinner />}
         </VStack>
       </Flex>
     </>
