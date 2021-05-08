@@ -49,11 +49,11 @@ function Home() {
     return (
 
       <Flex w="100vw" height="100vh" direction="column" align="center">
-        <Header w="100%" mb={5} />
+        <Header w="100%" mb={6} />
+        <Box overflow="scroll" w="100%" p={6}>
         <Heading alignSelf="start" ml={6}>
           People Looking for Roommates!
       </Heading>
-        <Box overflow="scroll" w="100%" p={6}>
           <Profiles profiles={filtered} yourProfile={yourProfile} />
 
         </Box>
