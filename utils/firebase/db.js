@@ -1,4 +1,6 @@
 import firebase from './firebase';
+import axios from 'axios';
+
 
 
 const firestore = firebase.firestore();
@@ -22,6 +24,20 @@ export async function getProfile(uid) {
   return doc.data();
 }
 
+export const addPseudoUsers = async () => {
+  const res = await axios.get('https://randomuser.me/api/?nat=us');
+  const psuedo = res.data.results[0]
+  const user = {
+    uid: psuedo.login.uuid,
+    email: psuedo.email,
+    name: psuedo.name.first + " " + psuedo.name.last,
+    pseudo: true,
+    photoUrl: psuedo.picture.thumbnail,
+  }
+  createUser(user.uid, user);
+  createProfile(user.uid, {name: user.name, pseudo: true})
+}
+
 export async function sendMessage(sendUid, message, { uid, name }) {
   try {
     return await firestore.collection('users').doc(sendUid).collection('messages').add({
@@ -30,6 +46,34 @@ export async function sendMessage(sendUid, message, { uid, name }) {
       sentBy: name,
       sentByUid: uid,
     })
+  } catch (error) {
+    return error;
+  }
+
+}
+
+export async function getMessages(uid) {
+  try {
+    let query = await firestore.collection('users').doc(uid).collection('messages').get();
+    const messages = [];
+    let unread = 0
+    if (!query.docs.length ) {
+      await sendMessage(uid, `Welcome to Roomer! \n 
+      This an auto-generated message from Roomer. \n 
+      If people message you from the home page, you will see their messages here! \n 
+      To get started, we'd recommend finishing up your profile by clicking the "profile" option next to Roomer at the top right of your screen. 
+      If you are on a mobile device, click the 3 stacked bars then hit the "profile" option. \n 
+      Feel free to check out any other menu options.`, {uid: "WGj2ExOHICTQrsnSsrHQU3Hkd4f1", name: "The Roomer App"});
+      query = await firestore.collection('users').doc(uid).collection('messages').get();
+    }
+    query.forEach((doc) => {
+      const data = doc.data()
+      messages.push(data);
+      if (!data.read) {
+        unread++;
+      }
+    })
+    return {messages: messages, unread: unread};
   } catch (error) {
     return error;
   }

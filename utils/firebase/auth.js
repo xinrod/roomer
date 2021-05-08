@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import Router from 'next/router';
 import firebase from './firebase';
-import { createProfile, createUser } from './db';
+import { createProfile, createUser, getMessages } from './db';
 
 const authContext = createContext(undefined);
 
@@ -17,17 +17,20 @@ export const useAuth = () => {
 function useFirebaseAuth() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [messageData, setMessageData] = useState({})
 
   const handleUser = async (rawUser) => {
     if (rawUser) {
       const user = await formatUser(rawUser);
       const { token, ...userWithoutToken } = user;
+      const messData = await getMessages(user.uid);
 
       createUser(user.uid, userWithoutToken);
       setUser(user);
       createProfile(user.uid, {
         name: user.name,
       })
+      setMessageData(messData);
       setLoading(false);
       return user;
     } else {
@@ -36,6 +39,39 @@ function useFirebaseAuth() {
       return false;
     }
   };
+
+  const signinWithGitHub = (redirect) => {
+    setLoading(true);
+    const provider = new firebase.auth.GithubAuthProvider();
+    return firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then((response) => {
+        console.log(response)
+        handleUser(response.user);
+
+        if (redirect) {
+          Router.push(redirect);
+        }
+      });
+  }
+ 
+  const signinWithFacebook = (redirect) => {
+    setLoading(true);
+    const provider = new firebase.auth.FacebookAuthProvider();
+    return firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then((response) => {
+        console.log(response)
+        handleUser(response.user);
+
+        if (redirect) {
+          Router.push(redirect);
+        }
+      });
+
+  }
 
   const signinWithGoogle = (redirect) => {
     setLoading(true);
@@ -66,7 +102,10 @@ function useFirebaseAuth() {
   return {
     user,
     loading,
+    messageData,
     signinWithGoogle,
+    signinWithGitHub,
+    signinWithFacebook,
     signout,
   };
 }

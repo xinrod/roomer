@@ -1,11 +1,11 @@
-import React from "react";
-import { Box, Heading, Flex, Text, Button } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { Box, Heading, Flex, Button, Spinner } from "@chakra-ui/react";
 import { useAuth } from "../utils/firebase/auth";
 import Link from 'next/link'
 
 const MenuItems = ({ children }) => {
     return (
-        <Link href={`/${children.toLowerCase()}`}>
+        <Link href={`/${children.toLowerCase().split(' ')[0]}`}>
             <Button bg="transparent" mt={{ base: 4, md: 0 }} mr={6} display="block"
                 _hover={{
 
@@ -18,9 +18,18 @@ const MenuItems = ({ children }) => {
 };
 
 const Header = props => {
-    const [show, setShow] = React.useState(false);
+    const [show, setShow] = useState(false);
     const handleToggle = () => setShow(!show);
+    const [numUnread, setUnread] = useState(false);
     const auth = useAuth();
+
+    useEffect(() => {
+
+        if (auth.messageData && "unread" in auth.messageData) {
+            setUnread(auth.messageData.unread);
+        }
+
+    }, [auth, auth.messageData])
 
     return (
         <Flex
@@ -35,11 +44,11 @@ const Header = props => {
         >
             <Flex align="center" mr={5}>
                 <Link href="/">
-                <Button bg="transparent" _hover={{}}>
-                    <Heading as="h1" size="lg" letterSpacing={"-.1rem"}>
-                        Roomer
+                    <Button bg="transparent" _hover={{}}>
+                        <Heading as="h1" size="lg" letterSpacing={"-.1rem"}>
+                            Roomer
                 </Heading>
-                </Button>
+                    </Button>
                 </Link>
             </Flex>
 
@@ -62,6 +71,7 @@ const Header = props => {
                 flexGrow={1}
             >
                 <MenuItems>Profile</MenuItems>
+                {numUnread ? <MenuItems>{`Messages (${numUnread})`}</MenuItems> : <Spinner size="xs" />}
                 <MenuItems>Donate</MenuItems>
             </Box>
 

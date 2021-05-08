@@ -17,7 +17,7 @@ const YourProfileCard = ({ profile }) => {
         <Flex direction={["column", "row"]} w="100%">
           <Box>
             <Box>
-              <Heading color="twitter.600" mb={2}>
+              <Heading color="Gray.200" mb={2}>
                 {profile.name}  <chakra.span fontSize="md" color="gray.600">{(" (This is you! Update your profile if anything is missing!)")}</chakra.span>
               </Heading>
               <Text>
@@ -59,7 +59,7 @@ const ProfileCard = ({ profile, you }) => {
         <Flex direction={["column", "row"]} w="100%">
           <Box>
             <Box>
-              <Heading color="twitter.600" mb={2}>
+              <Heading color="purple" mb={2}>
                 {profile.name}  <chakra.span fontSize="md" color="gray.600">{(you ? " (This is you! Update your profile if anything is missing!)" : "")}</chakra.span>
               </Heading>
               <Text>

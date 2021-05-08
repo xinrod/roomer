@@ -11,7 +11,39 @@ import Signin from "../../components/Signin";
 import { useAuth } from "../../utils/firebase/auth";
 import { createProfile, getProfile } from "../../utils/firebase/db";
 import { useRouter } from 'next/router';
+import { CUIAutoComplete } from 'chakra-ui-autocomplete'
+import { majors } from './majors';
 
+function MajorAutocomplete({selectedItems, setSelectedItems}) {
+    let majorsFormatted = majors.map(val => ({value:val.value, label:val.value}));
+    const [pickerItems, setPickerItems] = useState(majorsFormatted);
+  
+    const handleCreateItem = (item) => {
+      setPickerItems((curr) => [...curr, item]);
+      setSelectedItems((curr) => [...curr, item]);
+    };
+  
+    const handleSelectedItemsChange = (selectedItems) => {
+      if (selectedItems) {
+        setSelectedItems(selectedItems);
+      }
+    };
+  
+    return (
+      <FormControl id="major">
+          <CUIAutoComplete
+            label="Enter your Majors"
+            placeholder="Type a major"
+            onCreateItem={handleCreateItem}
+            items={pickerItems}
+            selectedItems={selectedItems}
+            onSelectedItemsChange={(changes) =>
+              handleSelectedItemsChange(changes.selectedItems)
+            }
+          />
+          </FormControl>
+    );
+  }
 
 export default function Profile() {
     const auth = useAuth();
@@ -19,6 +51,7 @@ export default function Profile() {
         const router = useRouter();
         const [profileData, setProfileData] = useState({});
         const [old, setOld] = useState({})
+        const [selectedItems, setSelectedItems] = useState([]);
         useEffect(() => {
             const getOld = async (uid) => {
                 const res = await getProfile(uid);
@@ -35,9 +68,11 @@ export default function Profile() {
         }, [profileData])
         const handleSubmit = (e) => {
             e.preventDefault();
+            const majors = selectedItems.map((majorObject) => (majorObject.value)).reduce((acc, major)=>(acc + ", " + major), "").slice(2);
+
             setProfileData({
                 name: auth.user.name,
-                major: e.target.major.value,
+                major: majors,
                 campus: e.target.campus.value,
                 hometown: e.target.hometown.value,
                 grad: e.target.grad.value,
@@ -53,10 +88,7 @@ export default function Profile() {
                         Update your profile!
           </Heading>
                     <chakra.form onSubmit={handleSubmit}>
-                        <FormControl id="major">
-                            <FormLabel>Major</FormLabel>
-                            <Input name="major" defaultValue={old?.major} />
-                        </FormControl>
+                        <MajorAutocomplete selectedItems={selectedItems} setSelectedItems={setSelectedItems}/>
                         <FormControl id="grad">
                             <FormLabel id="grad">
                                 Graduation Date
@@ -89,10 +121,10 @@ export default function Profile() {
                         <Box w="100%" align="center">
                             <Button type="submit">Update and post your profile!</Button>
                         </Box>
+                    
                     </chakra.form>
                 </Flex>
             </Flex>
-
         );
     }
     return (<Signin />)
