@@ -105,24 +105,28 @@ export default function Profile() {
                         Update your profile!
           </Heading>
                     <chakra.form onSubmit={handleSubmit}>
-                        <FormControl id="name">
+                        <FormControl id="name" mb={2}>
                             <FormLabel id="name">
-                                Enter your name
+                                Name
                 </FormLabel>
-                            <Input name="grad" defaultValue={old?.name} placeholder="Enter your name year">
-
-                            </Input>
+                            <Input name="name" defaultValue={old?.name} placeholder="Enter your name year"/>
+                        </FormControl>
+                        <FormControl id="email" mb={2}>
+                            <FormLabel id="email">
+                                Email
+                </FormLabel>
+                            <Input name="email" defaultValue={old?.email} placeholder="Enter your email"/>
                         </FormControl>
                         <MajorAutocomplete selectedItems={selectedItems} setSelectedItems={setSelectedItems} />
-                        <FormControl id="grad">
+                        <FormControl id="grad" mb={2}>
                             <FormLabel id="grad">
-                                Graduation Date
+                                Graduation Year
                 </FormLabel>
                             <Input name="grad" defaultValue={old?.grad} placeholder="Enter your graduation year">
 
                             </Input>
                         </FormControl>
-                        <FormControl as="fieldset">
+                        <FormControl as="fieldset" mb={2}>
                             <FormLabel as="legend">Living on or off campus?</FormLabel>
                             <RadioGroup value={campus} name="campus" colorScheme="blue" onChange={handleCampusChange}>
                                 <HStack>
@@ -131,13 +135,13 @@ export default function Profile() {
                                 </HStack>
                             </RadioGroup>
                         </FormControl>
-                        <FormControl id="hometown" >
+                        <FormControl id="hometown" mb={2} >
                             <FormLabel>Hometown</FormLabel>
                             <Input name="hometown" defaultValue={old?.hometown} placeholder="Enter your hometown" />
                         </FormControl>
-                        <FormControl id="bio">
+                        <FormControl id="bio" mb={2}>
                             <FormLabel id="bio">
-                                Write a short bio about yourself!
+                                Bio
                 </FormLabel>
                             <Textarea name="bio" defaultValue={old?.bio} placeholder="Write a short bio about yourself!">
 

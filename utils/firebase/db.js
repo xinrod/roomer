@@ -13,10 +13,12 @@ export async function createUser(uid, data) {
 export async function createProfile(uid, data) {
   let formattedData = {}
   for (const prop in data) {
-    if (!(data[prop] == null || data[prop] === "")) {
+    console.log(prop, data[prop])
+    if (!(data[prop] == null || data[prop] == "")) {
       formattedData[prop] = data[prop]
     }
   }
+  console.log(formattedData)
   return await firestore
     .collection('users')
     .doc(uid)
