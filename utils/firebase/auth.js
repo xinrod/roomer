@@ -22,10 +22,11 @@ function useFirebaseAuth() {
   const handleUser = async (rawUser) => {
     if (rawUser) {
       let user = await formatUser(rawUser);
+      const messData = await getMessages(user.uid);
       const oldUser = await getProfile(user.uid);
       if (oldUser) {
         const userWithoutToken = oldUser
-        const messData = await getMessages(user.uid);
+        
 
         createUser(user.uid, userWithoutToken);
         setUser(user);
@@ -34,7 +35,6 @@ function useFirebaseAuth() {
         return user;
       }
       const { token, ...userWithoutToken } = user;
-      const messData = await getMessages(user.uid);
 
       createUser(user.uid, userWithoutToken);
       setUser(user);
