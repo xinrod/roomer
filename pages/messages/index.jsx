@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/button";
 import { useDisclosure } from "@chakra-ui/hooks";
-import { Box, Flex, Heading, Text, VStack } from "@chakra-ui/layout";
+import { Flex, Heading, Text, VStack } from "@chakra-ui/layout";
 import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/modal";
 import { Spinner } from "@chakra-ui/spinner";
 import { useEffect, useState } from "react";

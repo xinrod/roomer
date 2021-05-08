@@ -1,15 +1,11 @@
 import { Button } from "@chakra-ui/button"
 import { useDisclosure } from "@chakra-ui/hooks"
 import { Image } from "@chakra-ui/image"
-import { Box, Flex, Heading, HStack, Text } from "@chakra-ui/layout"
-import { Modal, ModalCloseButton, ModalContent, ModalOverlay, ModalHeader, ModalBody, ModalFooter } from "@chakra-ui/modal"
+import { Box, Flex, Heading, Text } from "@chakra-ui/layout"
 import { Skeleton } from "@chakra-ui/skeleton"
 import { Spinner } from "@chakra-ui/spinner"
 import { chakra } from "@chakra-ui/system"
-import { Textarea } from "@chakra-ui/textarea"
-import { useState } from "react"
 import { useAuth } from "../utils/firebase/auth"
-import { sendMessage } from "../utils/firebase/db"
 import MessageModal from "./MessageModal"
 
 

@@ -1,6 +1,5 @@
 import { Button } from "@chakra-ui/button";
 import { Flex, Text, VStack } from "@chakra-ui/layout"
-import { Spinner } from "@chakra-ui/spinner";
 
 import GoogleButton from "react-google-button";
 import { useAuth } from "../utils/firebase/auth";

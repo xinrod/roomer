@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import Profiles from "../components/Profiles";
 import Signin from "../components/Signin";
 import { useAuth } from "../utils/firebase/auth";
-import { getProfiles, addPseudoUsers } from "../utils/firebase/db";
+import { getProfiles, addPseudoUsers,  } from "../utils/firebase/db";
 
 
 
@@ -51,6 +51,7 @@ function Home() {
       <Flex w="100vw" height="100vh" direction="column" align="center">
         <Header w="100%" mb={6} />
         <Box overflow="scroll" w="100%" p={6}>
+        {/* <Button onClick={mergeProfileUsers}>Test</Button> */}
         <Heading alignSelf="start" ml={6}>
           People Looking for Roommates!
       </Heading>

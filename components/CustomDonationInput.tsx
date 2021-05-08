@@ -1,10 +1,6 @@
 import { FormLabel } from '@chakra-ui/form-control'
 import { Input } from '@chakra-ui/input'
 import { Flex } from '@chakra-ui/layout'
-import { SliderThumb } from '@chakra-ui/slider'
-import { SliderFilledTrack } from '@chakra-ui/slider'
-import { SliderTrack } from '@chakra-ui/slider'
-import { Slider } from '@chakra-ui/slider'
 import React from 'react'
 import { formatAmountForDisplay } from '../utils/stripe/stripe-helpers'
 

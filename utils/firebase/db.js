@@ -18,13 +18,13 @@ export async function createProfile(uid, data) {
     }
   }
   return await firestore
-    .collection('profiles')
+    .collection('users')
     .doc(uid)
     .set({ uid: uid, ...formattedData }, { merge: true });
 }
 export async function getProfile(uid) {
   const doc = await firestore
-    .collection('profiles')
+    .collection('users')
     .doc(uid)
     .get();
   return doc.data();
@@ -106,11 +106,18 @@ export async function getMessages(uid) {
 
 export async function getProfiles() {
 
-  const query = await firestore.collection('profiles').get();
+  const query = await firestore.collection('users').get();
   const profiles = [];
   query.forEach((doc) => {
     profiles.push(doc.data());
   })
   return profiles
 
+}
+
+export async function mergeProfileUsers() {
+  const query = await firestore.collection('profiles').get()
+  query.forEach((doc) => {
+    createProfile(doc.data().uid,doc.data())
+  })
 }
