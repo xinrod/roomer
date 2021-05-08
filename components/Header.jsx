@@ -71,7 +71,7 @@ const Header = props => {
                 flexGrow={1}
             >
                 <MenuItems>Profile</MenuItems>
-                {numUnread ? <MenuItems>{`Messages (${numUnread})`}</MenuItems> : <Spinner size="xs" />}
+                {!isNaN(numUnread) ? <MenuItems>{`Messages (${numUnread})`}</MenuItems> : <Spinner size="xs" />}
                 <MenuItems>Donate</MenuItems>
             </Box>
 

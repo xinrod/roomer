@@ -40,6 +40,12 @@ function useFirebaseAuth() {
     }
   };
 
+  const updateMessages = async () => {
+    const messData = await getMessages(user.uid);
+    setMessageData(messData);
+
+  }
+
   const signinWithGitHub = (redirect) => {
     setLoading(true);
     const provider = new firebase.auth.GithubAuthProvider();
@@ -103,6 +109,7 @@ function useFirebaseAuth() {
     user,
     loading,
     messageData,
+    updateMessages,
     signinWithGoogle,
     signinWithGitHub,
     signinWithFacebook,

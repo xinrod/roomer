@@ -6,18 +6,29 @@ import { Spinner } from "@chakra-ui/spinner";
 import { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import { useAuth } from "../../utils/firebase/auth";
+import { readMessage } from "../../utils/firebase/db";
 
 
-const Message = ({ message }) => {
+const Message = ({ message, auth }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const formattedMessage = message.message.split('\n').map(str => (<Text my={2}>{str}</Text>))
+  const formattedMessage = message.message.split('\n').map((str,idx) => (<Text my={2} key={idx}>{str}</Text>))
+  const read = async () => {
+    await readMessage(auth.user.uid, message.mid);
+   await auth.updateMessages();
+  }
+  const handleClick = () => {
+    onOpen();
+    if (!message.read) {
+      
+      read();
+    }
+  }
   return (
     <>
       <Button border="1px" borderColor="gray.200" borderRadius={4} p={6} w={["280px","500px"]} h="60px" fontSize={["10px", "md"]}colorScheme={"whatsapp"} _hover={{
-        fontSize: ["sm","lg"],
-
+        fontSize: ["","lg"],
         height: "65px"
-      }} onClick={onOpen}>
+      }} onClick={handleClick}>
         <Text>
           {!message.read ? "Unread" : ""} Message From {message.sentBy}{!message.read ? "! Click to view!" : ""}
         </Text>
@@ -28,9 +39,9 @@ const Message = ({ message }) => {
           <ModalHeader>Message from {message.sentBy}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text>
+            
               {formattedMessage}
-            </Text>
+            
             <Text textAlign="end">
               From {message.sentBy}
             </Text>
@@ -67,7 +78,7 @@ const Messages = () => {
           Inbox
       </Heading>
         <VStack alignSelf="start" justifySelf="flex-start" m={4}>
-          {Array.isArray(messages) ? messages.map((message, idx) => <Message message={message} key={idx} />) : <Spinner />}
+          {Array.isArray(messages) ? messages.map((message, idx) => <Message message={message} auth={auth} key={idx} />) : <Spinner />}
         </VStack>
       </Flex>
     </>

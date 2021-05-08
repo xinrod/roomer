@@ -24,6 +24,12 @@ export async function getProfile(uid) {
   return doc.data();
 }
 
+export async function readMessage(uid, mid) {
+  return await firestore.collection('users').doc(uid).collection('messages').doc(mid).set({
+    read: true,
+  }, { merge: true })
+}
+
 export const addPseudoUsers = async () => {
   const res = await axios.get('https://randomuser.me/api/?nat=us');
   const psuedo = res.data.results[0]
@@ -40,12 +46,15 @@ export const addPseudoUsers = async () => {
 
 export async function sendMessage(sendUid, message, { uid, name }) {
   try {
-    return await firestore.collection('users').doc(sendUid).collection('messages').add({
+    const ref = firestore.collection('users').doc(sendUid).collection('messages').doc()
+    const id = ref.id
+    return await firestore.collection('users').doc(sendUid).collection('messages').doc(id).set({
       message: message,
       read: false,
       sentBy: name,
       sentByUid: uid,
-    })
+      mid: id,
+    }, { merge: true })
   } catch (error) {
     return error;
   }
