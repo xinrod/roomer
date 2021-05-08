@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import Router from 'next/router';
 import firebase from './firebase';
-import { createProfile, createUser, getMessages } from './db';
+import { createProfile, createUser, getMessages, getProfile } from './db';
 
 const authContext = createContext(undefined);
 
@@ -21,19 +21,27 @@ function useFirebaseAuth() {
 
   const handleUser = async (rawUser) => {
     if (rawUser) {
-      const user = await formatUser(rawUser);
+      let user = await formatUser(rawUser);
+      const oldUser = await getProfile(user.uid);
+      if (oldUser) {
+        const userWithoutToken = oldUser
+        const messData = await getMessages(user.uid);
+
+        createUser(user.uid, userWithoutToken);
+        setUser(user);
+        setMessageData(messData);
+        setLoading(false);
+        return user;
+      }
       const { token, ...userWithoutToken } = user;
       const messData = await getMessages(user.uid);
 
       createUser(user.uid, userWithoutToken);
       setUser(user);
-      createProfile(user.uid, {
-        name: user.name,
-        photoUrl: user.photoUrl
-      })
       setMessageData(messData);
       setLoading(false);
       return user;
+
     } else {
       setUser(false);
       setLoading(false);
@@ -61,7 +69,7 @@ function useFirebaseAuth() {
         }
       });
   }
- 
+
   const signinWithFacebook = (redirect) => {
     setLoading(true);
     const provider = new firebase.auth.FacebookAuthProvider();
