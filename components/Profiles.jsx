@@ -30,6 +30,9 @@ const YourProfileCard = ({ profile }) => {
               </Text>
             </Box>
             <Text>
+                Hometown: <chakra.strong>{profile.hometown ? profile.hometown : "not stated"}</chakra.strong>
+              </Text>
+            <Text>
               Living <chakra.strong>{profile.campus ? `${profile.campus}-campus` : "not stated"}</chakra.strong>
             </Text>
             <Text>
@@ -75,6 +78,9 @@ const ProfileCard = ({ profile, you }) => {
                 Class of <chakra.strong>{profile.grad ? profile.grad : "not stated"}</chakra.strong>
               </Text>
             </Box>
+            <Text>
+                Hometown: <chakra.strong>{profile.hometown ? profile.hometown : "not stated"}</chakra.strong>
+              </Text>
             <Text>
               Living <chakra.strong>{profile.campus ? `${profile.campus}-campus` : "not stated"}</chakra.strong>
             </Text>
