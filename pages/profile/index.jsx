@@ -13,6 +13,7 @@ import { createProfile, getProfile } from "../../utils/firebase/db";
 import { useRouter } from 'next/router';
 import { CUIAutoComplete } from 'chakra-ui-autocomplete'
 import { majors } from '../../utils/majors';
+import axios from "axios";
 
 function MajorAutocomplete({selectedItems, setSelectedItems}) {
     let majorsFormatted = majors.map(val => ({value:val.value, label:val.value}));
@@ -47,26 +48,31 @@ function MajorAutocomplete({selectedItems, setSelectedItems}) {
 
 export default function Profile() {
     const auth = useAuth();
-    if (auth.user) {
+    
         const router = useRouter();
         const [profileData, setProfileData] = useState({});
         const [old, setOld] = useState({})
         const [selectedItems, setSelectedItems] = useState([]);
+        const [note, setNote] = useState("");
         useEffect(() => {
             const getOld = async (uid) => {
                 const res = await getProfile(uid);
                 setOld(res);
             }
-            getOld(auth.user.uid)
-        }, [])
+            if (auth.user) getOld(auth.user.uid)
+        }, [auth])
         useEffect(async () => {
             // console.log(profileData)
-            if (profileData != {} && 'major' in profileData && 'campus' in profileData && 'hometown' in profileData && 'bio' in profileData) {
+            if (auth.user && profileData != {} && 'major' in profileData && 'campus' in profileData && 'hometown' in profileData && 'bio' in profileData) {
                 await createProfile(auth.user.uid, profileData)
-                router.push('/')
+                setNote("Profile updated!")
             }
 
         }, [profileData])
+        const search = async (input) => {
+            const res = await axios.get(`/api/get_places_suggestion/${input}`);
+            console.log(res)
+        }
         const handleSubmit = (e) => {
             e.preventDefault();
             const majors = selectedItems.map((majorObject) => (majorObject.value)).reduce((acc, major)=>(acc + ", " + major), "").slice(2);
@@ -80,6 +86,11 @@ export default function Profile() {
                 bio: e.target.bio.value,
             })
         }
+        const handleEnter = (e) => {
+            e.preventDefault();
+            search(e.target.value);
+        }
+        if (auth.user) {
         return (
 
             <Flex w="100vw" height="100vh" direction="column" align="center">
@@ -88,7 +99,7 @@ export default function Profile() {
                     <Heading as="h1" size="lg" letterSpacing={"-.1rem"} mb={6}>
                         Update your profile!
           </Heading>
-                    <chakra.form onSubmit={handleSubmit}>
+                    <chakra.form onSubmit={handleSubmit} onKeyDown={handleEnter}>
                         <MajorAutocomplete selectedItems={selectedItems} setSelectedItems={setSelectedItems}/>
                         <FormControl id="grad">
                             <FormLabel id="grad">
@@ -109,7 +120,7 @@ export default function Profile() {
                         </FormControl>
                         <FormControl id="hometown" >
                             <FormLabel>Hometown</FormLabel>
-                            <Input name="hometown" defaultValue={old?.hometown} placeholder="Enter your hometown" />
+                            <Input name="hometown" defaultValue={old?.hometown} placeholder="Enter your hometown" onKeyDown={handleEnter}/>
                         </FormControl>
                         <FormControl id="bio">
                             <FormLabel id="bio">
@@ -126,7 +137,9 @@ export default function Profile() {
                         <Text colorScheme="telegram" fontSize="xs" my={4}>
                             Note: your profile picture is taken off of your 3rd party login, so if you want to change it, change it there! Sorry, file storage is expensive :(.
                         </Text>
-                        
+                        <Text color="gray" fontSize="md" my={4}>
+                            {note}
+                        </Text>
                     
                     </chakra.form>
                 </Flex>
