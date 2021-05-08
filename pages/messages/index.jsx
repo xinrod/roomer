@@ -5,9 +5,28 @@ import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHea
 import { Spinner } from "@chakra-ui/spinner";
 import { useEffect, useState } from "react";
 import Header from "../../components/Header";
+import MessageModal from "../../components/MessageModal";
+import Signin from "../../components/Signin";
 import { useAuth } from "../../utils/firebase/auth";
-import { readMessage } from "../../utils/firebase/db";
+import { deleteMessage, readMessage } from "../../utils/firebase/db";
 
+const ReplyModal = ({message, auth}) => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const replyProfile = {
+    name: message.sentBy,
+    uid: message.sentByUid
+  }
+  return (
+    <>
+    <Button colorScheme="blue" mr={3} onClick={onOpen}>
+                Reply
+              
+        </Button>
+        <MessageModal isOpen={isOpen} onOpen={onOpen} profile={replyProfile} onClose={onClose}/>
+        </>
+  )
+
+}
 
 const Message = ({ message, auth }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -16,24 +35,33 @@ const Message = ({ message, auth }) => {
     await readMessage(auth.user.uid, message.mid);
    await auth.updateMessages();
   }
-  const handleClick = () => {
-    onOpen();
+  const deleteFunc = async () => {
+    await deleteMessage(auth.user.uid, message.mid);
+   await auth.updateMessages();
+   onClose();
+  }
+  const handleClose= () => {
+    onClose();
     if (!message.read) {
       
       read();
     }
+  }
+  const handleDelete = () => {
+    deleteFunc();
+    
   }
   return (
     <>
       <Button border="1px" borderColor="gray.200" borderRadius={4} p={6} w={["280px","500px"]} h="60px" fontSize={["10px", "md"]}colorScheme={"whatsapp"} _hover={{
         fontSize: ["","lg"],
         height: "65px"
-      }} onClick={handleClick}>
+      }} onClick={onOpen}>
         <Text>
           {!message.read ? "Unread" : ""} Message From {message.sentBy}{!message.read ? "! Click to view!" : ""}
         </Text>
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+      <Modal isOpen={isOpen} onClose={handleClose} size="xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Message from {message.sentBy}</ModalHeader>
@@ -48,7 +76,9 @@ const Message = ({ message, auth }) => {
           </ModalBody>
 
           <ModalFooter>
-              <Button colorScheme="blue" mr={3} onClick={onClose}>
+            <ReplyModal message={message} auth={auth}/>
+            <Button colorScheme="blue" mr={3} onClick={handleDelete}> Delete</Button>
+              <Button colorScheme="blue" mr={3} onClick={handleClose}>
                 Close
               
         </Button>
@@ -65,12 +95,11 @@ const Messages = () => {
   const [filtered, setFiltered] = useState()
   useEffect(() => {
     let messageData = {}
-    if (auth.messageData) {
+    if (auth.messageData ) {
       messageData = auth.messageData
     }
     setMessageData(messageData);
   }, [auth])
-  const { messages, unread } = messageData;
 
   useEffect(() => {
     const read = []
@@ -86,20 +115,24 @@ const Messages = () => {
     }
     setFiltered([...unread, ...read])
   }, [messageData])
+  if (auth.user) {
   return (
     <>
       <Header />
-      <Flex flexDir="column" maxW="900px" m="auto">
-        <Heading>
+      <Flex flexDir="column" maxW="900px" m="auto" align="center">
+        <Heading mt={6}>
           Inbox
       </Heading>
-        <VStack alignSelf="start" justifySelf="flex-start" m={4}>
+        <VStack alignSelf="center" justifySelf="flex-start" m={4}>
           {Array.isArray(filtered) && filtered.length > 0 ? filtered.map((message, idx) => <Message message={message} auth={auth} key={idx} />) : <Spinner />}
         </VStack>
       </Flex>
     </>
   );
-
+  }
+  else {
+    return <Signin/>
+  }
 }
 
 export default Messages

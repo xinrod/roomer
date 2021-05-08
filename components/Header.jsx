@@ -81,8 +81,8 @@ const Header = props => {
                 width={{ base: "full", md: "auto" }}
                 align="center"
             >
-                <Button bg="transparent" border="1px" onClick={auth.signout} ml={-5}>
-                    Signout
+                    <Button bg="transparent" border="1px" onClick={auth.signout} ml={-5}>
+                        Signout
         </Button>
             </Box>
         </Flex>

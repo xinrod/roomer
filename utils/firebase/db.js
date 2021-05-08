@@ -52,7 +52,7 @@ export const addPseudoUsers = async () => {
 
 export async function sendMessage(sendUid, message, { uid, name }) {
   try {
-    const ref = firestore.collection('users').doc(sendUid).collection('messages').doc()
+    const ref = await firestore.collection('users').doc(sendUid).collection('messages').doc()
     const id = ref.id
     return await firestore.collection('users').doc(sendUid).collection('messages').doc(id).set({
       message: message,
@@ -61,6 +61,15 @@ export async function sendMessage(sendUid, message, { uid, name }) {
       sentByUid: uid,
       mid: id,
     }, { merge: true })
+  } catch (error) {
+    return error;
+  }
+
+}
+export async function deleteMessage(uid, mid) {
+  try {
+    const res = await firestore.collection('users').doc(uid).collection('messages').doc(mid).delete();
+    return res;
   } catch (error) {
     return error;
   }

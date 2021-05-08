@@ -23,24 +23,26 @@ function Home() {
     fetchProfiles();
   }, [auth])
   useEffect(() => {
-    const fakes = []
-    const real = []
-    let yourProfile = {}
-    for (let i = 0; i < profiles.length; i++) {
-      let profile = profiles[i]
-      if (profile.uid === auth.user.uid) {
-        yourProfile = profile;
+    if (auth.user) {
+      const fakes = []
+      const real = []
+      let yourProfile = {}
+      for (let i = 0; i < profiles.length; i++) {
+        let profile = profiles[i]
+        if (profile.uid === auth.user.uid) {
+          yourProfile = profile;
+        }
+        if ("pseudo" in profile) {
+          fakes.push(profile)
+        } else {
+          real.push(profile)
+        }
       }
-      if ("pseudo" in profile) {
-        fakes.push(profile)
-      } else {
-        real.push(profile)
+      setFiltered([...real, ...fakes]);
+      setYours(yourProfile);
+      if (profiles.length >= 1 && profiles.length < 6) {
+        addPseudoUsers();
       }
-    }
-    setFiltered([...real, ...fakes]);
-    setYours(yourProfile);
-    if (profiles.length >= 1 && profiles.length < 6 && auth.user) {
-      addPseudoUsers();
     }
   }, [profiles])
   if (auth.user) {
@@ -52,7 +54,7 @@ function Home() {
           People Looking for Roommates!
       </Heading>
         <Box overflow="scroll" w="100%" p={6}>
-          <Profiles profiles={filtered} yourProfile={yourProfile}/>
+          <Profiles profiles={filtered} yourProfile={yourProfile} />
 
         </Box>
       </Flex>
