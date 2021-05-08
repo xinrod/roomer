@@ -12,7 +12,7 @@ import { useAuth } from "../../utils/firebase/auth";
 import { createProfile, getProfile } from "../../utils/firebase/db";
 import { useRouter } from 'next/router';
 import { CUIAutoComplete } from 'chakra-ui-autocomplete'
-import { majors } from './majors';
+import { majors } from '../../utils/majors';
 
 function MajorAutocomplete({selectedItems, setSelectedItems}) {
     let majorsFormatted = majors.map(val => ({value:val.value, label:val.value}));

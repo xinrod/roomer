@@ -1,6 +1,6 @@
 import React from 'react'
 import { CUIAutoComplete } from 'chakra-ui-autocomplete'
-import { majors } from '../pages/profile/majors';
+import { majors } from '../utils/majors';
 import { FormControl } from '@chakra-ui/form-control';
 
 
