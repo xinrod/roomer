@@ -10,7 +10,7 @@ import { chakra } from '@chakra-ui/system'
 const CheckoutForm = () => {
   const [loading, setLoading] = useState(false)
   const [input, setInput] = useState({
-    customDonation: Math.round(config.MAX_AMOUNT / config.AMOUNT_STEP),
+    customDonation: 1.00,
   })
 
   const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (e) =>
