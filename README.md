@@ -1,3 +1,11 @@
+## Context
+
+An app designed to help people find roommates, check it out at https://roomer-phi.vercel.app/. If you sign in you will be on the front page of people!
+
+
+
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
