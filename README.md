@@ -2,6 +2,7 @@
 
 An app designed to help people find roommates, check it out at https://roomer-phi.vercel.app/. If you sign in you will be on the front page of people!
 
+![image](https://user-images.githubusercontent.com/54514158/128109954-a8871933-bcc4-4676-a7a7-6c83c20f8cbc.png)
 
 
 
